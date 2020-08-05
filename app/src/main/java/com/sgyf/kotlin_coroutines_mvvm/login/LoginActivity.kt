@@ -3,8 +3,11 @@ package com.sgyf.kotlin_coroutines_mvvm.login
 import android.os.Bundle
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import com.sgyf.kotlin_coroutines_mvvm.BR
+
 import com.sgyf.kotlin_coroutines_mvvm.R
 import com.zs.base_library.base.BaseVmActivity
+import com.zs.base_library.base.DataBindingConfig
 import com.zs.base_library.common.toast
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -16,6 +19,12 @@ class LoginActivity : BaseVmActivity(){
 
     override fun initViewModel() {
         loginVM = getActivityViewModel(LoginVM::class.java)
+    }
+
+
+    override fun getDataBindingConfig(): DataBindingConfig? {
+        return DataBindingConfig(R.layout.activity_login, loginVM)
+            .addBindingParam(BR.vm, loginVM)
     }
 
     override fun init(savedInstanceState: Bundle?) {

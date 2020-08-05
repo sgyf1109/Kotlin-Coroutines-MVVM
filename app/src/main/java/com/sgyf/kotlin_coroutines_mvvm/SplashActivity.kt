@@ -6,6 +6,7 @@ import com.sgyf.kotlin_coroutines_mvvm.constants.Constants
 import com.sgyf.kotlin_coroutines_mvvm.login.LoginActivity
 import com.sgyf.kotlin_coroutines_mvvm.utils.DialogUtils
 import com.zs.base_library.base.BaseVmActivity
+import com.zs.base_library.base.DataBindingConfig
 import com.zs.base_library.utils.PrefUtils
 import com.zs.base_library.utils.StatusUtils
 import io.reactivex.Observable
@@ -35,6 +36,10 @@ class SplashActivity : BaseVmActivity(), EasyPermissions.PermissionCallbacks {
 
     override fun getLayoutId() =
         R.layout.activity_splash
+
+    override fun getDataBindingConfig(): DataBindingConfig? {
+        return DataBindingConfig(R.layout.activity_splash)
+    }
 
     companion object {
         private const val REQUEST_CODE = 100

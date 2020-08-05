@@ -4,6 +4,9 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -17,8 +20,11 @@ import com.zs.base_library.utils.StatusUtils
  * @author zs
  */
 abstract class BaseVmActivity : FragmentActivity() {
+    private var mBinding: ViewDataBinding? = null
 
     private var mActivityProvider: ViewModelProvider? = null
+    private var dataBindingConfig: DataBindingConfig? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -28,11 +34,27 @@ abstract class BaseVmActivity : FragmentActivity() {
         setStatusColor()
         setSystemInvadeBlack()
         initViewModel()
+        initViewDataBinding(savedInstanceState)
         observe()
         init(savedInstanceState)
 
     }
 
+    private fun initViewDataBinding(savedInstanceState: Bundle?) {
+        //DataBindingUtil类需要在project的build中配置 dataBinding {enabled true }, 同步后会自动关联android.databinding包
+        mBinding = getLayoutId()?.let { DataBindingUtil.setContentView(this, it) }
+        //将ViewDataBinding生命周期与activity绑定
+        mBinding?.lifecycleOwner = this
+        dataBindingConfig = getDataBindingConfig()
+        dataBindingConfig?.apply {
+            val bindingParams = bindingParams
+            //TODO 将bindingParams逐个加入到ViewDataBinding中的Variable
+            // 这一步很重要,否则xml中拿不到variable中内容
+            for (i in 0 until bindingParams.size()) {
+                mBinding?.setVariable(bindingParams.keyAt(i), bindingParams.valueAt(i))
+            }
+        }
+    }
 
 
     /**
@@ -89,6 +111,11 @@ abstract class BaseVmActivity : FragmentActivity() {
 
 
     /**
+     * 获取dataBinding配置项
+     */
+   abstract fun getDataBindingConfig(): DataBindingConfig?
+
+    /**
      * 跳转页面
      *
      * @param clz 所跳转的目的Activity类
@@ -123,5 +150,20 @@ abstract class BaseVmActivity : FragmentActivity() {
             intent.putExtras(bundle)
         }
         startActivityForResult(intent, 100)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        hideSoftInput()
+        mBinding?.unbind()
+    }
+
+    /**
+     * 隐藏软件盘
+     */
+    protected open fun hideSoftInput() {
+        val imm =
+            getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm?.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 }

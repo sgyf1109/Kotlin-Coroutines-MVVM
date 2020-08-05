@@ -9,11 +9,11 @@ class LoginVM :BaseViewModel(){
     /**
      * 登陆
      */
-    val loginLiveData = MutableLiveData<UserBean>()
+    val loginLiveData = MutableLiveData<UserBean>()//布局未绑定viewmodel
 
     private val repo by lazy { LoginRepo(viewModelScope,errorLiveData) }
 
     fun login(){
-        repo.login("sgyf","1234",loginLiveData)
+        repo.login("sgyf1109","123456",loginLiveData)
     }
 }
