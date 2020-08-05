@@ -8,7 +8,10 @@ import com.sgyf.kotlin_coroutines_mvvm.BR
 import com.sgyf.kotlin_coroutines_mvvm.R
 import com.zs.base_library.base.BaseVmActivity
 import com.zs.base_library.base.DataBindingConfig
+import com.zs.base_library.common.clickNoRepeat
+import com.zs.base_library.common.setNoRepeatClick
 import com.zs.base_library.common.toast
+import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : BaseVmActivity(){
@@ -22,6 +25,7 @@ class LoginActivity : BaseVmActivity(){
     }
 
 
+
     override fun getDataBindingConfig(): DataBindingConfig? {
         return DataBindingConfig(R.layout.activity_login, loginVM)
             .addBindingParam(BR.vm, loginVM)
@@ -33,14 +37,20 @@ class LoginActivity : BaseVmActivity(){
 
     //初始化点击事件
     private fun initView() {
-        loginBtn.setOnClickListener {
+        //注册多个
+//        setNoRepeatClick(loginBtn){
+//            when(it.id){
+//                R.id.loginBtn->loginVM?.login()
+//            }
+//        }
+        loginBtn.clickNoRepeat{
             loginVM?.login()
         }
     }
 
     override fun observe() {
         loginVM?.loginLiveData?.observe(this, Observer {
-            Toast.makeText(this,"登陆成功",Toast.LENGTH_SHORT).show()
+            Toasty.normal(applicationContext,"登陆成功").show()
         })
     }
 }

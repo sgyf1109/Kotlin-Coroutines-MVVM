@@ -37,10 +37,6 @@ class SplashActivity : BaseVmActivity(), EasyPermissions.PermissionCallbacks {
     override fun getLayoutId() =
         R.layout.activity_splash
 
-    override fun getDataBindingConfig(): DataBindingConfig? {
-        return DataBindingConfig(R.layout.activity_splash)
-    }
-
     companion object {
         private const val REQUEST_CODE = 100
     }

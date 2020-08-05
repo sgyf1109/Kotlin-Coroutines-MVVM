@@ -91,6 +91,8 @@ dependencies {
     api 'com.github.hackware1993:MagicIndicator:1.6.0'
     api 'pub.devrel:easypermissions:3.0.0'
     api 'com.github.donkingliang:LabelsView:1.6.1'
+    api 'com.github.GrenderG:Toasty:1.4.2'
+    api 'me.jessyan:autosize:1.2.1'
 //    api 'androidx.fragment:fragment:1.3.0-alpha06'
 //    api 'androidx.fragment:fragment-ktx:1.3.0-alpha06'
 //    debugImplementation 'androidx.fragment:fragment-testing:1.3.0-alpha06'
